@@ -8,7 +8,9 @@ package br.com.logic.trilha.daos;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
  */
 public abstract class Conexao implements Serializable {
 
-    private final String url = "jdbc:hsqldb:file:<path>";
+    private final String url = "jdbc:hsqldb:file:"+System.getProperty("user.dir")+"/src/main/resources/lancamento";
 
     protected Connection conecta() {
 
@@ -27,7 +29,21 @@ public abstract class Conexao implements Serializable {
             return DriverManager.getConnection(url, "sa", "");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("ERRO: "+ Conexao.class.getName() +" :: "+ex.getMessage());
             return null;
+        }
+    }
+    
+    protected void close(Connection con, Statement stmt, ResultSet rs){
+        try {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+            if (con != null)
+                con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

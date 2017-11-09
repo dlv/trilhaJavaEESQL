@@ -1,2 +1,3 @@
-br/com/logic/trilha/daos/Conexao.class
+br/com/logic/trilha/daos/LancamentoDAO.class
 br/com/logic/trilha/NewSessionBean.class
+br/com/logic/trilha/daos/Conexao.class
