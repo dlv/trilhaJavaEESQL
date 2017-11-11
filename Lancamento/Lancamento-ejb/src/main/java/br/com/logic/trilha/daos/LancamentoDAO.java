@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.Dependent;
 
 /**
  *
  * @author douglas
  */
+@Dependent
 public class LancamentoDAO extends Conexao {
 
     private Connection con;
@@ -29,6 +31,23 @@ public class LancamentoDAO extends Conexao {
 
     public List<Lancamento> buscar() {
         List<Lancamento> lista = new ArrayList<>();
+        
+//        Lancamento lancamento = new Lancamento();
+//        TipoLancamento tipoLancamento = new TipoLancamento();
+//
+//        lancamento.setId(1);
+//        lancamento.setNome("TESTE");
+//        lancamento.setData("20171111");
+//        lancamento.setValor(15.0);
+//
+//        tipoLancamento.setId(1);
+//        tipoLancamento.setDescricao("DEBITO");
+//
+//        lancamento.setTipoLancamento(tipoLancamento);
+//
+//        lista.add(lancamento);
+        
+        
         sql = new StringBuilder();
         try {
             con = conecta();

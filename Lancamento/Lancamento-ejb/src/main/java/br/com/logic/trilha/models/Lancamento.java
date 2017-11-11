@@ -56,6 +56,9 @@ public class Lancamento {
     public void setTipoLancamento(TipoLancamento tipoLancamento) {
         this.tipoLancamento = tipoLancamento;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "{" + "id=" + id + ", nome=" + nome + ", data=" + data + ", valor=" + valor + ", tipoLancamento=" + tipoLancamento + '}';
+    }
 }
