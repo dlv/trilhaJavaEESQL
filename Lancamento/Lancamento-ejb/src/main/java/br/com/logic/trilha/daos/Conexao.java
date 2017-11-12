@@ -7,12 +7,12 @@ package br.com.logic.trilha.daos;
 
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 
 /**
  *
@@ -20,14 +20,14 @@ import java.util.logging.Logger;
  */
 public abstract class Conexao implements Serializable {
 
-    private final String url = "jdbc:hsqldb:file:"+System.getProperty("user.dir")+"/src/main/resources/lancamento";
+    @Resource(lookup="java:/trilhaDS")
+    private javax.sql.DataSource trilhaDS;
 
     protected Connection conecta() {
 
         try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            return DriverManager.getConnection(url, "sa", "");
-        } catch (ClassNotFoundException | SQLException ex) {
+            return trilhaDS.getConnection();
+        } catch (SQLException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("ERRO: "+ Conexao.class.getName() +" :: "+ex.getMessage());
             return null;

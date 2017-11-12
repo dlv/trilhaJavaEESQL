@@ -7,7 +7,9 @@ package br.com.logic.trilha.lancamento;
 
 import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
-import br.com.logic.trilha.models.TipoLancamento;
+import java.util.List;
+import javax.ejb.EJB;
+import org.junit.Assert;
 
 import org.junit.Test;
 
@@ -17,25 +19,13 @@ import org.junit.Test;
  */
 public class LancamentoTest {
 
-    @Test
-    public void testLancamentoContasDoMes() {
-        LancamentoDAO lDao = new LancamentoDAO();
-        Lancamento l = new Lancamento();
-        TipoLancamento tipoLancamento = new TipoLancamento();
+    @EJB
+    LancamentoDAO lancamentoDAO;
 
-        l.setNome("TESTE");
-        l.setData("20171108");
-        l.setValor(15.0);
-        
-        tipoLancamento.setId(1);
-
-        l.setTipoLancamento(tipoLancamento);
-        
-        lDao.contasMes(l);
-        
-//        List<Lancamento> dados = lDao.buscar();
-
-//        Assert.assertNotNull(dados);
+//    @Test
+    public void testBuscar() {
+        List<Lancamento> lista = lancamentoDAO.buscar();
+        Assert.assertNotNull(lista);
 //        Assert.assertEquals(0,dados.size());
 
     }

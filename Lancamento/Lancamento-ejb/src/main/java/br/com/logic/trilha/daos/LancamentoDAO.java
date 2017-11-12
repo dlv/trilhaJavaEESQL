@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 
 /**
  *
  * @author douglas
  */
+@Stateless
 @Dependent
 public class LancamentoDAO extends Conexao {
 
@@ -31,32 +33,20 @@ public class LancamentoDAO extends Conexao {
 
     public List<Lancamento> buscar() {
         List<Lancamento> lista = new ArrayList<>();
-        
-//        Lancamento lancamento = new Lancamento();
-//        TipoLancamento tipoLancamento = new TipoLancamento();
-//
-//        lancamento.setId(1);
-//        lancamento.setNome("TESTE");
-//        lancamento.setData("20171111");
-//        lancamento.setValor(15.0);
-//
-//        tipoLancamento.setId(1);
-//        tipoLancamento.setDescricao("DEBITO");
-//
-//        lancamento.setTipoLancamento(tipoLancamento);
-//
-//        lista.add(lancamento);
-        
-        
+     
         sql = new StringBuilder();
         try {
             con = conecta();
+            
+            if (con == null)
+                return lista;
+            
             stmt = con.createStatement();
 
-            sql.append("\n select l.id, l.nome, l.data, l.valor, l.tipolancamento, tl.descricao");
-            sql.append("\n from lancamento l");
-            sql.append("\n join tipolancamento tl on l.tipolancamento = tl.id");
-            sql.append("\n order by l.id");
+            sql.append("\n select c.id, c.nome, c.data, c.idtipolancamento, tl.descricao");
+            sql.append("\n from conta c");
+            sql.append("\n join tipolancamento tl on c.idtipolancamento = tl.id");
+            sql.append("\n order by c.id");
 
             rs = stmt.executeQuery(sql.toString());
 
@@ -67,9 +57,9 @@ public class LancamentoDAO extends Conexao {
                 lancamento.setId(rs.getInt("id"));
                 lancamento.setNome(rs.getString("nome"));
                 lancamento.setData(rs.getString("data"));
-                lancamento.setValor(rs.getDouble("valor"));
+//                lancamento.setValor(rs.getDouble("valor"));
 
-                tipoLancamento.setId(rs.getInt("tipolancamento"));
+                tipoLancamento.setId(rs.getInt("idtipolancamento"));
                 tipoLancamento.setDescricao(rs.getString("descricao"));
 
                 lancamento.setTipoLancamento(tipoLancamento);
@@ -94,16 +84,16 @@ public class LancamentoDAO extends Conexao {
             stmt = con.createStatement();
             //</editor-fold>
             
-            sql.append("insert into lancamento values (");
+            sql.append("insert into conta values (");
             sql.append(lancamento.getId()).append(",");
             sql.append("'").append(lancamento.getNome()).append("',");
             sql.append("'").append(lancamento.getData()).append("',");
-            sql.append(lancamento.getValor()).append(",");
+//            sql.append(lancamento.getValor()).append(",");
             sql.append(lancamento.getTipoLancamento().getId());
             sql.append(")");
 
             stmt.execute(sql.toString());
-            con.commit();
+//            con.commit();
         } catch (SQLException ex) {
             try {
                 con.rollback();
