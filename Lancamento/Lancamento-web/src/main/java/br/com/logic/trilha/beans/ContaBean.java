@@ -11,11 +11,13 @@ import br.com.logic.trilha.models.TipoLancamento;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -83,5 +85,19 @@ public class ContaBean {
         lancamento.contasMes(lanc);
 //        return "<html lang=\"en\"><body><h1>" + lanc.getNome().toUpperCase() + "</h1></body></html>";
         return Response.ok().entity("Lançamento cadastrado com sucesso").build();
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/teste")
+    public Response loginService(@Context HttpServletRequest req, String nome) {
+        try {
+
+            return Response.ok("{}").build();
+
+        } catch (Exception e) {
+
+            return Response.ok().build();
+        }
     }
 }
