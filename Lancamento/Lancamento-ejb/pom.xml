@@ -25,7 +25,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.1.4.Final</version>
+                <version>1.1.13.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -37,9 +37,24 @@
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
-            <version>1.1.4.Final</version>
+            <version>1.1.6.Final-wildfly-1</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-arquillian-container-remote</artifactId>
+            <version>8.2.1.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wildfly.bom</groupId>
+            <artifactId>wildfly-with-tools</artifactId>
+            <version>11.0.0.Final</version>
+            <type>pom</type>
+        </dependency>
+
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>

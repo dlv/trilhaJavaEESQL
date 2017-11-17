@@ -105,4 +105,8 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, null);
         }
     }
+    
+    public Boolean testMethod(){
+        return Boolean.TRUE;
+    }
 }
