@@ -15,7 +15,7 @@ public class Lancamento {
     private String nome;
     private String data;
     private Double valor;
-    private TipoLancamento tipoLancamento = new TipoLancamento();
+    private TipoLancamentoENUM tipoLancamento;
 
     public Integer getId() {
         return id;
@@ -49,11 +49,11 @@ public class Lancamento {
         this.valor = valor;
     }
 
-    public TipoLancamento getTipoLancamento() {
+    public TipoLancamentoENUM getTipoLancamento() {
         return tipoLancamento;
     }
 
-    public void setTipoLancamento(TipoLancamento tipoLancamento) {
+    public void setTipoLancamento(TipoLancamentoENUM tipoLancamento) {
         this.tipoLancamento = tipoLancamento;
     }
 

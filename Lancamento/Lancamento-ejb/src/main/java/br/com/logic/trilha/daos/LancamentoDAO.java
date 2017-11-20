@@ -6,7 +6,7 @@
 package br.com.logic.trilha.daos;
 
 import br.com.logic.trilha.models.Lancamento;
-import br.com.logic.trilha.models.TipoLancamento;
+import br.com.logic.trilha.models.TipoLancamentoENUM;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +43,7 @@ public class LancamentoDAO extends Conexao {
             
             stmt = con.createStatement();
 
-            sql.append("\n select c.id, c.nome, c.data, c.idtipolancamento, tl.descricao");
+            sql.append("\n select c.id, c.nome, c.data, c.valor, c.idtipolancamento");
             sql.append("\n from conta c");
             sql.append("\n join tipolancamento tl on c.idtipolancamento = tl.id");
             sql.append("\n order by c.id");
@@ -52,17 +52,13 @@ public class LancamentoDAO extends Conexao {
 
             while (rs.next()) {
                 Lancamento lancamento = new Lancamento();
-                TipoLancamento tipoLancamento = new TipoLancamento();
 
                 lancamento.setId(rs.getInt("id"));
                 lancamento.setNome(rs.getString("nome"));
                 lancamento.setData(rs.getString("data"));
-//                lancamento.setValor(rs.getDouble("valor"));
-
-                tipoLancamento.setId(rs.getInt("idtipolancamento"));
-                tipoLancamento.setDescricao(rs.getString("descricao"));
-
-                lancamento.setTipoLancamento(tipoLancamento);
+                lancamento.setValor(rs.getDouble("valor"));
+                // TODO: tratar enum
+                lancamento.setTipoLancamento(TipoLancamentoENUM.getTipo(rs.getInt("idtipolancamento")));
 
                 lista.add(lancamento);
             }
@@ -88,12 +84,11 @@ public class LancamentoDAO extends Conexao {
             sql.append(lancamento.getId()).append(",");
             sql.append("'").append(lancamento.getNome()).append("',");
             sql.append("'").append(lancamento.getData()).append("',");
-//            sql.append(lancamento.getValor()).append(",");
-            sql.append(lancamento.getTipoLancamento().getId());
+            sql.append(lancamento.getValor()).append(",");
+            sql.append(lancamento.getTipoLancamento().getTipo());
             sql.append(")");
 
             stmt.execute(sql.toString());
-//            con.commit();
         } catch (SQLException ex) {
             try {
                 con.rollback();
