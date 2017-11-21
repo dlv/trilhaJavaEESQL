@@ -9,7 +9,6 @@ import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
 import br.com.logic.trilha.models.TipoLancamentoENUM;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -61,13 +61,50 @@ public class LancamentoRest {
     @POST
     @Path("/conta")
     @Produces(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_HTML)
     public Response lancarContaMes(@FormParam("nome") String nome,
             @FormParam("data") String data, @FormParam("valor") String valor, @FormParam("tipo") String tipo) {
 
-        TipoLancamentoENUM  tipoLanc = null;
         String paramIsEmpty = "";
+        Lancamento lanc = validarCampos(nome, data, valor, tipo, paramIsEmpty);
+                
+        if (lancamento == null && !paramIsEmpty.isEmpty()) {
+            return Response.ok().entity(paramIsEmpty).build();
+        }
 
+        lancamento.contasMes(lanc);
+
+        return Response.ok().entity("Lançamento cadastrado com sucesso").build();
+    }
+
+    @PUT
+    @Path("/alterar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response alterarLancamento(@FormParam("idLancamento") Integer idLancamento){
+
+        return Response.ok().entity("Lançamento "+idLancamento+" alterado com sucesso").build();
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/teste")
+    public Response teste(@Context HttpServletRequest req, String nome) {
+        try {
+
+            Lancamento l = new Lancamento();
+            l.setNome("TESTE");
+            return Response.ok(l.toString()).build();
+
+        } catch (Exception e) {
+
+            return Response.ok().build();
+        }
+    }
+
+    private Lancamento validarCampos(String nome, String data, String valor, String tipo, String paramIsEmpty){
+        TipoLancamentoENUM  tipoLanc = null;
+        Lancamento lanc = null;
+
+        
         if (nome == null || nome.isEmpty()) {
             paramIsEmpty += " Informe o Nome";
         }
@@ -97,36 +134,17 @@ public class LancamentoRest {
         }
         
         if (!paramIsEmpty.isEmpty()) {
-            return Response.ok().entity(paramIsEmpty).build();
+            return lanc;
         }
-
-        Lancamento lanc = new Lancamento();
-
+        
+        lanc = new Lancamento();
+        
         lanc.setNome(nome.toUpperCase());
         lanc.setData(data);
         lanc.setValor(Double.parseDouble(valor));
 
-        
         lanc.setTipoLancamento(tipoLanc);
-
-        lancamento.contasMes(lanc);
-
-        return Response.ok().entity("Lançamento cadastrado com sucesso").build();
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/teste")
-    public Response loginService(@Context HttpServletRequest req, String nome) {
-        try {
-
-            Lancamento l = new Lancamento();
-            l.setNome("TESTE");
-            return Response.ok(l.toString()).build();
-
-        } catch (Exception e) {
-
-            return Response.ok().build();
-        }
+        
+        return lanc;
     }
 }
