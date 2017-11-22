@@ -5,25 +5,37 @@
  */
 package br.com.logic.trilha.daos;
 
-import javax.ejb.embeddable.EJBContainer;
-import static org.junit.Assert.*;
+import javax.inject.Inject;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author douglas
  */
-//@RunWith(Arquillian.class)
+@RunWith(Arquillian.class)
 public class LancamentoDAOTest {
+
+    @Deployment
+    public static Archive<?> createTestArchive() {
+        return ShrinkWrap.create(WebArchive.class, "test.war").addPackage(LancamentoDAO.class.getPackage())
+//                .addPackage(Producer.class.getPackage()).addPackage(SimpleProperty.class.getPackage())
+//                .addPackage(RepositoryManager.class.getPackage()).addAsResource("META-INF/persistence.xml")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+
+    }
+
+    @Inject
+    private LancamentoDAO lancamentoDAO;
     
-//    @Deployment
-//    public static JavaArchive createDeployment() {
-//        return ShrinkWrap.create(JavaArchive.class).addClass(LancamentoDAOTest.class)
-//                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-//    }
-//
-//    @Inject
-//    private LancamentoDAO lancamentoDAO;
-//    
+
     /**
      * Test of buscar method, of class LancamentoDAO.
      */
@@ -54,21 +66,13 @@ public class LancamentoDAOTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-
     /**
      * Test of testMethod method, of class LancamentoDAO.
      */
-//    @Test
+    @Test
     public void testTestMethod() throws Exception {
-        System.out.println("testMethod");
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        LancamentoDAO instance = (LancamentoDAO)container.getContext().lookup("java:global/classes/LancamentoDAO");
-        Boolean expResult = null;
-        Boolean result = instance.testMethod();
-        assertEquals(expResult, result);
-        container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        Assert.assertTrue(lancamentoDAO.testMethod());
     }
-    
+
 }
