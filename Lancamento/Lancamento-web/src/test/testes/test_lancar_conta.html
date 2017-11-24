@@ -7,12 +7,14 @@ and open the template in the editor.
 <html>
     <head>
         <title>Teste Lançamento de Conta</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<meta http-equiv="Content-Type" charset="application/json;UTF-8">-->
+        <!--<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">-->
+        <meta http-equiv="content-type" content="application/json; charset=UTF-8">
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     </head>
     <body>
         <div>
-            <form action="http://localhost:8080/lancamento/conta" method="POST">
+            <form action="http://localhost:8080/Lancamento-web-1.0-SNAPSHOT/conta" method="POST" enctype="application/json">
                 Name:   <input type="text" name="nome"><br>
                 Data:   <input type="text" name="data"><br>
                 Valor:  <input type="text" name="valor"><br>

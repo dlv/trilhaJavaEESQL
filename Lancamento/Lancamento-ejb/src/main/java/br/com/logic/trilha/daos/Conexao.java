@@ -13,12 +13,15 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.inject.Singleton;
+
 
 /**
  *
  * @author douglas
  */
-public abstract class Conexao implements Serializable {
+@Singleton
+public class Conexao implements Serializable {
 
     @Resource(lookup="java:/trilhaDS")
     private javax.sql.DataSource trilhaDS;

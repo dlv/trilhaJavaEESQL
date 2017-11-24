@@ -7,8 +7,8 @@
     <packaging>pom</packaging>
     <name>Lancamento</name>
     <modules>
-        <module>Lancamento-ear</module>
         <module>Lancamento-web</module>
+        <module>Lancamento-ear</module>
         <module>Lancamento-ejb</module>
     </modules>
 </project>

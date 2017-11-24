@@ -18,6 +18,9 @@ public class LancamentoDTO implements Serializable{
     private String valor;
     private String tipo;
 
+    public LancamentoDTO() {
+    }
+
     public String getNome() {
         return nome;
     }
