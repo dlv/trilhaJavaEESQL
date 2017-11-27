@@ -43,10 +43,10 @@ public class LancamentoDAO extends Conexao {
             
             stmt = con.createStatement();
 
-            sql.append("\n select c.id, c.nome, c.data, c.valor, c.idtipolancamento");
-            sql.append("\n from conta c");
-            sql.append("\n join tipolancamento tl on c.idtipolancamento = tl.id");
-            sql.append("\n order by c.id");
+            sql.append("\n select lm.id, lm.nome, lm.datalancamento, lm.valorlancamento, lm.idtipolancamento");
+            sql.append("\n from lancamentomensal lm");
+            sql.append("\n join tipolancamento tl on lm.idtipolancamento = tl.id");
+            sql.append("\n order by lm.id desc limit 10");
 
             rs = stmt.executeQuery(sql.toString());
 
