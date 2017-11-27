@@ -1,22 +1,19 @@
-![Cabecalho](../../ReadMe-Anexos/Cabecalho.png)
+# ![Cabecalho](../../ReadMe-Anexos/Cabecalho.png)
 
+[Home](../../README.md) :: [How-to Técnico](../How-To-Tecnico.md) :: [Intruções Trilha JEE-SQL](Intrucoes-Trilha-JEE-SQL.md)
 
-[Home](../../ReadMe.md) :: [How-to Técnico](../How-To-Tecnico.md) :: [Intruções Trilha JEE-SQL](Intrucoes-Trilha-JEE-SQL.md)
-
-
-# Instruções para realização dos exercícios
+## Instruções para realização dos exercícios
 
 ## Objetivo
 
 Este documento tem como objetivo a definição de uma estratégia para a evolução tecnológica nos conceitos de JEE e SQL dos colaboradores da Logic.
 
-
 _Para definição da estratégia os seguintes pontos são importantes:_
 
 ## Metodologia
 
-1. será fornecido material de apoio, junto com um curso a distância que devem ser utilizado como base de conhecimento
-2. após a conclusão dos estudos do material de apoio e cursos complementares o colaborador deverá executar avaliação prática
+1. será fornecido material de apoio, junto com um curso a distância que devem ser utilizado como base de conhecimento.
+1. após a conclusão dos estudos do material de apoio e cursos complementares o colaborador deverá executar avaliação prática
 
 ## Material
 

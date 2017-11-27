@@ -7,8 +7,9 @@
 Documentação do projeto do exercício prático do treinamento em **JEE e SQL**.
 
 Este portal terá toda a documentação padrão de **Eng. de Software** dos projetos **Logic**, exceto:
-    1 **Casos de Uso e Casos de Teste Manuais**: Serão adicionados em evoluções futuras deste projeto, quando este passar a considerar interações com atores através de interfaces gráticas
-    2 **Documentação de Arquitetura**: Será adicionada se houver execícios focados em alteração de arquitetura no futuro.
+
+1. **Casos de Uso e Casos de Teste Manuais**: Serão adicionados em evoluções futuras deste projeto, quando este passar a considerar interações com atores através de interfaces gráticas.
+1. **Documentação de Arquitetura**: Será adicionada se houver execícios focados em alteração de arquitetura no futuro.
 
 ## Características
 
