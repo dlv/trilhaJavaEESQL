@@ -1,16 +1,16 @@
-![Cabecalho](../../ReadMe-Anexos/Cabecalho.png)
+# ![Cabecalho](../../ReadMe-Anexos/Cabecalho.png)
 
-[Home](../../ReadMe.md) :: [Módulo Financeiro](../Modulo-Financeiro.md) :: [FU-Lançamento Contas Mensais](FU-Lancamento-Contas-Mensais/FU-Lancamento-Contas-Mensais.md)
+[Home](../../README.md) :: [Módulo Financeiro](../Modulo-Financeiro.md) :: [FU-Lançamento Contas Mensais](FU-Lancamento-Contas-Mensais/FU-Lancamento-Contas-Mensais.md)
 
+## Funcionalidade: Lançamento Contas Mensais
 
-# Funcionalidade: Lançamento Contas Mensais
-
-## Descrição
+### Descrição
 
 Esta funcionalidade permite ao **Usuário** o lançamento de contas de despesas mensais com:
-- Data
-- Descrição
-- Valor
+
+* Data
+* Descrição
+* Valor
 
 As contas são organizadas por tipo de lançamento.
 
