@@ -7,6 +7,7 @@ package br.com.logic.trilha.daos;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +16,6 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Singleton;
 
-
 /**
  *
  * @author douglas
@@ -23,7 +23,7 @@ import javax.inject.Singleton;
 @Singleton
 public class Conexao implements Serializable {
 
-    @Resource(lookup="java:/trilhaDS")
+    @Resource(lookup = "java:/trilhaDS")
     private javax.sql.DataSource trilhaDS;
 
     protected Connection conecta() {
@@ -32,19 +32,34 @@ public class Conexao implements Serializable {
             return trilhaDS.getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("ERRO: "+ Conexao.class.getName() +" :: "+ex.getMessage());
+            System.err.println("ERRO: " + Conexao.class.getName() + " :: " + ex.getMessage());
             return null;
         }
     }
-    
-    protected void close(Connection con, Statement stmt, ResultSet rs){
+
+    protected void close(Connection con, Statement stmt, PreparedStatement pstmt, ResultSet rs) {
         try {
-            if (rs != null)
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            close(con, stmt, rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void close(Connection con, Statement stmt, ResultSet rs) {
+        try {
+            if (rs != null) {
                 rs.close();
-            if (stmt != null)
+            }
+            if (stmt != null) {
                 stmt.close();
-            if (con != null)
+            }
+            if (con != null) {
                 con.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         }

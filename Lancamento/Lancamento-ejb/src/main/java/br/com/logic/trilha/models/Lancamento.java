@@ -5,6 +5,10 @@
  */
 package br.com.logic.trilha.models;
 
+import com.thoughtworks.xstream.XStream;
+import java.util.Date;
+
+
 /**
  *
  * @author douglas
@@ -12,8 +16,8 @@ package br.com.logic.trilha.models;
 public class Lancamento {
 
     private Integer id;
-    private String nome;
-    private String data;
+    private String descricaoLancamento;
+    private Date data;
     private Double valor;
     private TipoLancamentoENUM tipoLancamento;
 
@@ -25,19 +29,19 @@ public class Lancamento {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricaoLancamento() {
+        return descricaoLancamento;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricaoLancamento(String descricaoLancamento) {
+        this.descricaoLancamento = descricaoLancamento;
     }
 
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
 
@@ -57,8 +61,7 @@ public class Lancamento {
         this.tipoLancamento = tipoLancamento;
     }
 
-    @Override
-    public String toString() {
-        return "{" + "id=" + id + ", nome=" + nome + ", data=" + data + ", valor=" + valor + ", tipoLancamento=" + tipoLancamento + '}';
+    public String toXML(){
+        return new XStream().toXML(this);
     }
 }

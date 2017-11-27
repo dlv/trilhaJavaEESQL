@@ -1,0 +1,2 @@
+curl -v -H "Content-Type: application/xml"  -d "<br.com.logic.trilha.models.Lancamento><id>1</id><descricaoLancamento>Supermercado</descricaoLancamento><data>2017-11-27 15:16:03.139 UTC</data><valor>20.0</valor><tipoLancamento>ALIMENTACAO</tipoLancamento></br.com.logic.trilha.models.Lancamento>" http://localhost:8080/lancamento
+

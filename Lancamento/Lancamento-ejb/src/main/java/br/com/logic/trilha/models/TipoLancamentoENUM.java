@@ -10,28 +10,45 @@ package br.com.logic.trilha.models;
  * @author douglas
  */
 public enum TipoLancamentoENUM {
-    DEBITO(1),
-    CREDITO(2);
+    UNKNOWN(-1,"Desconhecido"),
+    ALIMENTACAO(1, "Alimetação"),
+    MORADIA(2, "Moradia"),
+    EDUCACAO(3, "Educação"),
+    TRANSPORTE(4, "Transporte"),
+    SAUDE(5, "Saúde"),
+    LAZER(6, "Lazer"),
+    OUTROS(7, "Outros");
 
-    private Integer tipo;
+    private Integer id;
+    private String descricao;
 
-    private TipoLancamentoENUM(Integer tipo) {
-        this.tipo = tipo;
+    private TipoLancamentoENUM(Integer id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public Integer getId() {
+        return id;
     }
 
-    public static TipoLancamentoENUM getTipo(Integer valor) {
-        int v = valor;
-        switch (v) {
-            case 1:
-                return TipoLancamentoENUM.DEBITO;
-            case 2:
-                return TipoLancamentoENUM.CREDITO;
-            default:
-                return null;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public static TipoLancamentoENUM getTipoLancamentoENUM(Integer id) {
+        for (TipoLancamentoENUM e : values()) {
+            if (e.id.equals(id)) {
+                return e;
+            }
         }
+        return UNKNOWN;
     }
 }

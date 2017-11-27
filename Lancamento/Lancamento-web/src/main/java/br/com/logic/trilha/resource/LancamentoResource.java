@@ -9,6 +9,8 @@ import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.dto.LancamentoDTO;
 import br.com.logic.trilha.models.Lancamento;
 import br.com.logic.trilha.models.TipoLancamentoENUM;
+import com.thoughtworks.xstream.XStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -32,27 +34,35 @@ import javax.ws.rs.core.Response;
 @Path("/")
 public class LancamentoResource {
 
-    SimpleDateFormat FORMAT_DATA = new SimpleDateFormat("dd/MM/yyy");
-    SimpleDateFormat FORMAT_DATADB = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat FORMAT_DATA = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat FORMAT_DATADB = new SimpleDateFormat("yyyy-MM-dd");
 
     @Inject
-    private LancamentoDAO lancamento;
+    private LancamentoDAO lancamentoDAO;
+
+    @Path("{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public String buscaLancamento(@PathParam("id") Integer id) {
+        Lancamento lancamento = lancamentoDAO.buscar(id);
+        return lancamento.toXML();
+    }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getHtml() {
 
-        List<Lancamento> lista = lancamento.buscar();
+        List<Lancamento> lista = lancamentoDAO.buscar();
 
         String html = "<html lang=\"en\"><body><h2>";
         html += "TOTAL: " + lista.size() + "</h2></br></br><h4>";
 
         for (Lancamento lancamento : lista) {
             html += lancamento.getId() + " - ";
-            html += lancamento.getNome() + " - ";
+            html += lancamento.getDescricaoLancamento() + " - ";
             html += lancamento.getValor() + " - ";
-            html += lancamento.getData() + " - ";
-            html += lancamento.getTipoLancamento().name() + "</br>";
+            html += FORMAT_DATA.format(lancamento.getData()) + " - ";
+            html += lancamento.getTipoLancamento().getDescricao() + "</br>";
         }
 
         html += "</h4></body></html>";
@@ -60,54 +70,39 @@ public class LancamentoResource {
     }
 
     @POST
-    @Path("conta")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response lancarContaMes(LancamentoDTO lancamentoDTO) {
-//    public Response lancarContaMes(@FormParam("nome") String nome,
-//            @FormParam("data") String data, @FormParam("valor") String valor, @FormParam("tipo") String tipo) {
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response lancamentoMensal(String conteudo) {
+        Lancamento lancamento = (Lancamento) new XStream().fromXML(conteudo);
+        lancamentoDAO.lancamentoMensal(lancamento);
 
-        String paramIsEmpty = "";
-        Lancamento lanc = validar(lancamentoDTO, paramIsEmpty);
+        URI uri = URI.create("lancamento/" + lancamento.getId());
+        return Response.created(uri).build();
+    }
 
-        if (lancamento == null && !paramIsEmpty.isEmpty()) {
-            return Response.ok().entity(paramIsEmpty).build();
-        }
+    @Path("pesquisarPorPeriodo/{dataLancamento}")
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public Response pesquisarLancamentoPorPeriodo(@PathParam("dataLancamento") String dataLancamento) {
 
-        lancamento.contasMes(lanc);
+        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorPeriodo(dataLancamento);
+        XStream xStream = new XStream();
+        xStream.alias("Lancamento", Lancamento.class);
 
-        return Response.ok().entity("Lançamento cadastrado com sucesso").build();
+        return Response.ok(xStream.toXML(listaLancamento)).build();
     }
 
     @PUT
     @Path("/alterar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response alterarLancamento(@FormParam("idLancamento") Integer idLancamento) {
-
         return Response.ok().entity("Lançamento " + idLancamento + " alterado com sucesso").build();
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/teste/{nome}")
-    public Response teste(@PathParam("nome") String nome) { //@Context HttpServletRequest req,
-        try {
-
-            Lancamento l = new Lancamento();
-            l.setNome((nome == null || nome.isEmpty()) ? "TESTE" : nome);
-            return Response.ok(l.toString()).build();
-
-        } catch (Exception e) {
-
-            return Response.ok().build();
-        }
-    }
-
-    private Lancamento validarCampos(String nome, String data, String valor, String tipo, String paramIsEmpty) {
+    private Lancamento validarCampos(String descricao, String data, String valor, String tipo, String paramIsEmpty) {
         TipoLancamentoENUM tipoLanc = null;
         Lancamento lanc = null;
 
-        if (nome == null || nome.isEmpty()) {
+        if (descricao == null || descricao.isEmpty()) {
             paramIsEmpty += " Informe o Nome";
         }
 
@@ -141,15 +136,15 @@ public class LancamentoResource {
 
         lanc = new Lancamento();
 
-        lanc.setNome(nome.toUpperCase());
-        lanc.setData(data);
+        lanc.setDescricaoLancamento(descricao.toUpperCase());
+        lanc.setData(new java.sql.Date(0));
         lanc.setValor(Double.parseDouble(valor));
 
         lanc.setTipoLancamento(tipoLanc);
 
         return lanc;
     }
-    
+
     private Lancamento validar(LancamentoDTO dados, String paramIsEmpty) {
         TipoLancamentoENUM tipoLanc = null;
         Lancamento lanc = null;
@@ -188,13 +183,13 @@ public class LancamentoResource {
 
         lanc = new Lancamento();
 
-        lanc.setNome(dados.getNome().toUpperCase());
-        lanc.setData(dados.getData());
+        lanc.setDescricaoLancamento(dados.getNome().toUpperCase());
+        lanc.setData(new java.sql.Date(0));
         lanc.setValor(Double.parseDouble(dados.getValor()));
 
         lanc.setTipoLancamento(tipoLanc);
 
         return lanc;
     }
-    
+
 }

@@ -1,4 +1,5 @@
 /home/douglas/NetBeansProjects/trilhaJavaEESQL/Lancamento/Lancamento-ejb/src/main/java/br/com/logic/trilha/daos/LancamentoDAO.java
 /home/douglas/NetBeansProjects/trilhaJavaEESQL/Lancamento/Lancamento-ejb/src/main/java/br/com/logic/trilha/daos/Conexao.java
+/home/douglas/NetBeansProjects/trilhaJavaEESQL/Lancamento/Lancamento-ejb/src/main/java/br/com/logic/trilha/util/Data.java
 /home/douglas/NetBeansProjects/trilhaJavaEESQL/Lancamento/Lancamento-ejb/src/main/java/br/com/logic/trilha/models/TipoLancamentoENUM.java
 /home/douglas/NetBeansProjects/trilhaJavaEESQL/Lancamento/Lancamento-ejb/src/main/java/br/com/logic/trilha/models/Lancamento.java
