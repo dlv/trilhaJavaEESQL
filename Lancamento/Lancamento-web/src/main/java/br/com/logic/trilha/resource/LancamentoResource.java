@@ -6,12 +6,10 @@
 package br.com.logic.trilha.resource;
 
 import br.com.logic.trilha.daos.LancamentoDAO;
-import br.com.logic.trilha.dto.LancamentoDTO;
 import br.com.logic.trilha.models.Lancamento;
-import br.com.logic.trilha.models.TipoLancamentoENUM;
+import br.com.logic.trilha.util.Data;
 import com.thoughtworks.xstream.XStream;
 import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -33,9 +31,6 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 @Path("/")
 public class LancamentoResource {
-
-    SimpleDateFormat FORMAT_DATA = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat FORMAT_DATADB = new SimpleDateFormat("yyyy-MM-dd");
 
     @Inject
     private LancamentoDAO lancamentoDAO;
@@ -61,7 +56,7 @@ public class LancamentoResource {
             html += lancamento.getId() + " - ";
             html += lancamento.getDescricaoLancamento() + " - ";
             html += lancamento.getValor() + " - ";
-            html += FORMAT_DATA.format(lancamento.getData()) + " - ";
+            html += Data.FORMAT_DATA.format(lancamento.getData()) + " - ";
             html += lancamento.getTipoLancamento().getDescricao() + "</br>";
         }
 
@@ -79,12 +74,36 @@ public class LancamentoResource {
         return Response.created(uri).build();
     }
 
-    @Path("pesquisarPorPeriodo/{dataLancamento}")
+    @Path("periodo/{dataLancamento}")
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Response pesquisarLancamentoPorPeriodo(@PathParam("dataLancamento") String dataLancamento) {
 
         List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorPeriodo(dataLancamento);
+        XStream xStream = new XStream();
+        xStream.alias("Lancamento", Lancamento.class);
+
+        return Response.ok(xStream.toXML(listaLancamento)).build();
+    }
+
+    @Path("descricao/{nome}")
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public Response pesquisarLancamentoPorNome(@PathParam("nome") String descricaoLancamento) {
+
+        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorNome(descricaoLancamento);
+        XStream xStream = new XStream();
+        xStream.alias("Lancamento", Lancamento.class);
+
+        return Response.ok(xStream.toXML(listaLancamento)).build();
+    }
+
+    @Path("tipo/{tipo}")
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public Response pesquisarLancamentoPorTipo(@PathParam("tipo") String tipo) {
+
+        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorTipo(tipo);
         XStream xStream = new XStream();
         xStream.alias("Lancamento", Lancamento.class);
 
@@ -97,99 +116,4 @@ public class LancamentoResource {
     public Response alterarLancamento(@FormParam("idLancamento") Integer idLancamento) {
         return Response.ok().entity("Lançamento " + idLancamento + " alterado com sucesso").build();
     }
-
-    private Lancamento validarCampos(String descricao, String data, String valor, String tipo, String paramIsEmpty) {
-        TipoLancamentoENUM tipoLanc = null;
-        Lancamento lanc = null;
-
-        if (descricao == null || descricao.isEmpty()) {
-            paramIsEmpty += " Informe o Nome";
-        }
-
-        if (data == null || data.isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe a Data" : ", a Data";
-        }
-
-        if (valor == null || valor.isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe o Valor" : ", o Valor";
-        }
-
-        if (tipo == null || tipo.isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe o Tipo de Lançamento" : ", o Tipo de Lançamento";
-        }
-
-        try {
-            data = FORMAT_DATADB.format(FORMAT_DATA.parse(data));
-        } catch (Exception ex) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe a Data no formato dia/mes/ano" : ", a Data no formato dia/mes/ano";
-        }
-
-        try {
-            tipoLanc = TipoLancamentoENUM.valueOf(tipo.toUpperCase());
-        } catch (Exception ex) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe Tipo de Lançamento Débito ou Crédito" : ", o Tipo de Lançamento Débito ou Crédito";
-        }
-
-        if (!paramIsEmpty.isEmpty()) {
-            return lanc;
-        }
-
-        lanc = new Lancamento();
-
-        lanc.setDescricaoLancamento(descricao.toUpperCase());
-        lanc.setData(new java.sql.Date(0));
-        lanc.setValor(Double.parseDouble(valor));
-
-        lanc.setTipoLancamento(tipoLanc);
-
-        return lanc;
-    }
-
-    private Lancamento validar(LancamentoDTO dados, String paramIsEmpty) {
-        TipoLancamentoENUM tipoLanc = null;
-        Lancamento lanc = null;
-
-        if (dados.getNome() == null || dados.getNome().isEmpty()) {
-            paramIsEmpty += " Informe o Nome";
-        }
-
-        if (dados.getData() == null || dados.getData().isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe a Data" : ", a Data";
-        }
-
-        if (dados.getValor() == null || dados.getValor().isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe o Valor" : ", o Valor";
-        }
-
-        if (dados.getTipo() == null || dados.getTipo().isEmpty()) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe o Tipo de Lançamento" : ", o Tipo de Lançamento";
-        }
-
-        try {
-            dados.setData(FORMAT_DATADB.format(FORMAT_DATA.parse(dados.getData())));
-        } catch (Exception ex) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe a Data no formato dia/mes/ano" : ", a Data no formato dia/mes/ano";
-        }
-
-        try {
-            tipoLanc = TipoLancamentoENUM.valueOf(dados.getTipo().toUpperCase());
-        } catch (Exception ex) {
-            paramIsEmpty += (paramIsEmpty.isEmpty()) ? "Informe Tipo de Lançamento Débito ou Crédito" : ", o Tipo de Lançamento Débito ou Crédito";
-        }
-
-        if (!paramIsEmpty.isEmpty()) {
-            return lanc;
-        }
-
-        lanc = new Lancamento();
-
-        lanc.setDescricaoLancamento(dados.getNome().toUpperCase());
-        lanc.setData(new java.sql.Date(0));
-        lanc.setValor(Double.parseDouble(dados.getValor()));
-
-        lanc.setTipoLancamento(tipoLanc);
-
-        return lanc;
-    }
-
 }

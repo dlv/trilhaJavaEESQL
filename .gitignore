@@ -3,3 +3,20 @@
 /Lancamento/Lancamento-ear/target/
 Lancamento/Lancamento-ejb/target/classes/br/com/logic/trilha/daos/
 Lancamento-ejb/src/main/resources/db/lancamento.lck
+Lancamento/Lancamento-web/target/Lancamento-web-1.0-SNAPSHOT/WildFly.dpf
+Lancamento/Lancamento-web/target/classes/.netbeans_automatic_build
+Lancamento/Lancamento-web/target/test-classes/
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar

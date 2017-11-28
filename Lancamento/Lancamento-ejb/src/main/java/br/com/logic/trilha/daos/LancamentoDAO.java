@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +62,6 @@ public class LancamentoDAO extends Conexao {
                 lancamento.setDescricaoLancamento(rs.getString("descricaolancamento"));
                 lancamento.setData(rs.getDate("datalancamento"));
                 lancamento.setValor(rs.getDouble("valorlancamento"));
-                // TODO: tratar enum
                 lancamento.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
                 
                 lista.add(lancamento);
@@ -111,20 +109,15 @@ public class LancamentoDAO extends Conexao {
     }
     
     public Lancamento buscar(Integer id) {
-        sql = new StringBuilder();
         Lancamento lancamento = new Lancamento();
-        
-        sql.append("\n select id, descricaolancamento, datalancamento, valorlancamento, idtipolancamento ");
-        sql.append("\n from lancamentomensal");
-        sql.append("\n where id = ?");
-        
+
         try {
             //<editor-fold defaultstate="collapsed" desc="Conexão">
             con = conecta();
-            pstmt = con.prepareStatement(sql.toString());
+            pstmt = con.prepareStatement(montarConsulta("idlancamento"));
             //</editor-fold>
 
-            pstmt.setInt(1, id.intValue());
+            pstmt.setInt(1, id);
             
             rs = pstmt.executeQuery();
             
@@ -137,7 +130,7 @@ public class LancamentoDAO extends Conexao {
             }
             
             return lancamento;
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.buscar: " + ex.getMessage());
             return null;
         } finally {
@@ -146,17 +139,12 @@ public class LancamentoDAO extends Conexao {
     }
     
     public List<Lancamento> pesquisarPorPeriodo(String dataLancamento) {
-        sql = new StringBuilder();
         List<Lancamento> listaLancamento = new ArrayList<>();
-        
-        sql.append("\n select id, descricaolancamento, datalancamento, valorlancamento, idtipolancamento ");
-        sql.append("\n from lancamentomensal");
-        sql.append("\n where datalancamento = ?");
-        
+
         try {
             //<editor-fold defaultstate="collapsed" desc="Conexão">
             con = conecta();
-            pstmt = con.prepareStatement(sql.toString());
+            pstmt = con.prepareStatement(montarConsulta("periodolancamento"));
             //</editor-fold>
             
             pstmt.setDate(1, new java.sql.Date(Data.converterData(dataLancamento).getTime()));
@@ -181,5 +169,98 @@ public class LancamentoDAO extends Conexao {
         } finally {
             close(con, stmt, pstmt, rs);
         }
+    }
+    
+    public List<Lancamento> pesquisarPorNome(String descricaoLancamento) {
+        List<Lancamento> listaLancamento = new ArrayList<>();
+
+        try {
+            //<editor-fold defaultstate="collapsed" desc="Conexão">
+            con = conecta();
+            pstmt = con.prepareStatement(montarConsulta("descricaolancamento"));
+            //</editor-fold>
+            
+            pstmt.setString(1, "%"+descricaoLancamento.toUpperCase()+"%");
+
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Lancamento l = new Lancamento();
+                l.setId(rs.getInt("id"));
+                l.setDescricaoLancamento(rs.getString("descricaolancamento"));
+                l.setData(rs.getDate("datalancamento"));
+                l.setValor(rs.getDouble("valorlancamento"));
+                l.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
+                
+                listaLancamento.add(l);
+            }
+            
+            return listaLancamento;
+        } catch (SQLException ex) {
+            System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
+            return null;
+        } finally {
+            close(con, stmt, pstmt, rs);
+        }
+    }
+    
+    public List<Lancamento> pesquisarPorTipo(String tipo) {
+        List<Lancamento> listaLancamento = new ArrayList<>();
+
+        try {
+            //<editor-fold defaultstate="collapsed" desc="Conexão">
+            con = conecta();
+            pstmt = con.prepareStatement(montarConsulta("tipolancamento"));
+            //</editor-fold>
+            
+            pstmt.setInt(1, TipoLancamentoENUM.valueOf(tipo.toUpperCase()).getId());
+
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Lancamento l = new Lancamento();
+                l.setId(rs.getInt("id"));
+                l.setDescricaoLancamento(rs.getString("descricaolancamento"));
+                l.setData(rs.getDate("datalancamento"));
+                l.setValor(rs.getDouble("valorlancamento"));
+                l.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
+                
+                listaLancamento.add(l);
+            }
+            
+            return listaLancamento;
+        } catch (SQLException ex) {
+            System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
+            return null;
+        } finally {
+            close(con, stmt, pstmt, rs);
+        }
+    }
+    
+    private String montarConsulta(String consultar){
+        sql = new StringBuilder();
+        sql.append("\n select id, descricaolancamento, datalancamento, valorlancamento, idtipolancamento");
+        sql.append("\n from lancamentomensal");
+        
+        switch (consultar) {
+            case "datalancamento":
+                sql.append("\n where datalancamento = ?");
+                break;
+            case "tipolancamento":
+                sql.append("\n where idtipolancamento = ?");
+                break;
+            case "descricaolancamento":
+                sql.append("\n where UPPER(descricaolancamento) like ?");
+                break;
+            case "periodolancamento":
+                sql.append("\n where datalancamento = ?");
+                break;
+            case "idlancamento":
+                sql.append("\n where id = ?");
+                break;
+        }
+        sql.append("\n order by id");
+        
+        return sql.toString();
     }
 }
