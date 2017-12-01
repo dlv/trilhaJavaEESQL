@@ -5,7 +5,6 @@
  */
 package br.com.logic.trilha.models;
 
-import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import java.util.Date;
 
@@ -65,8 +64,5 @@ public class Lancamento {
     public String toXML(){
         return new XStream().toXML(this);
     }
-    
-    public String toJSON(){
-        return new Gson().toJson(this);
-    }
+
 }

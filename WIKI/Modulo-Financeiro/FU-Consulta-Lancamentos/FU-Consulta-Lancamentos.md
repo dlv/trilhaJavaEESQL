@@ -26,8 +26,6 @@ Consulta de Lançamento de Contas Mensais.
 
 ## Web Services
 
-**[WSDL](Web-Services/WSDL.md)**
-
 | Web Service                                                                                  | Descrição                                                  |
 | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | [WS-Pesquisar Lancamentos por Período](Web-Services/WS-Pesquisar-Lancamentos-Por-Periodo.md) | Pesquisa de lançamentos por período de tempo (dia/mês/ano) |

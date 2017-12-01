@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -138,7 +139,7 @@ public class LancamentoDAO extends Conexao {
         }
     }
     
-    public List<Lancamento> pesquisarPorPeriodo(String dataLancamento) {
+    public List<Lancamento> pesquisarPorPeriodo(Date data) {
         List<Lancamento> listaLancamento = new ArrayList<>();
 
         try {
@@ -147,7 +148,7 @@ public class LancamentoDAO extends Conexao {
             pstmt = con.prepareStatement(montarConsulta("periodolancamento"));
             //</editor-fold>
             
-            pstmt.setDate(1, new java.sql.Date(Data.converterData(dataLancamento).getTime()));
+            pstmt.setDate(1, new java.sql.Date(data.getTime()));
 
             rs = pstmt.executeQuery();
             

@@ -5,6 +5,7 @@
  */
 package br.com.logic.trilha.resource;
 
+import br.com.logic.trilha.beans.LancamentoBean;
 import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
 import br.com.logic.trilha.util.Data;
@@ -12,6 +13,8 @@ import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -33,15 +36,15 @@ public class LancamentoResource {
 
     @Inject
     private LancamentoDAO lancamentoDAO;
-    
-//    private Gson JSon;
+
+    @Inject
+    private LancamentoBean lancamentoBean;
 
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscaLancamento(@PathParam("id") Integer id) {
-        Lancamento lancamento = lancamentoDAO.buscar(id);
-        return Response.ok(lancamento.toJSON()).build();
+        return Response.ok(lancamentoBean.buscar(id)).build();
     }
     
     @GET
@@ -80,16 +83,16 @@ public class LancamentoResource {
         return Response.created(uri).build();
     }
 
-    @Path("periodo/{dataLancamento}")
+    @Path("periodo/{dia}/{mes}/{ano}")
     @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public Response pesquisarLancamentoPorPeriodo(@PathParam("dataLancamento") String dataLancamento) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pesquisarLancamentoPorPeriodo(@PathParam("dia") Integer dia,@PathParam("mes") Integer mes, @PathParam("ano") Integer ano) {
 
-        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorPeriodo(dataLancamento);
-        XStream xStream = new XStream();
-        xStream.alias("Lancamento", Lancamento.class);
-
-        return Response.ok(xStream.toXML(listaLancamento)).build();
+        try {
+            return Response.ok(lancamentoBean.buscarLancamentoPorPeriodo(dia,mes,ano)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).build();
+        }
     }
 
     @Path("descricao/{nome}")

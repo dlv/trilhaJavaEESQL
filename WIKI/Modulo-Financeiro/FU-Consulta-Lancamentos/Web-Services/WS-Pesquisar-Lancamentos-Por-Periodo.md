@@ -1,7 +1,7 @@
 ![Cabecalho](../../../ReadMe-Anexos/Cabecalho.png)
 
 
-[Home](../../../ReadMe.md) :: [Módulo Financeiro](../../Modulo-Financeiro.md) :: [FU-Consulta Lançamentos](../FU-Consulta-Lancamentos.md) :: [WS-Pesquisar Lancamentos por Período](WS-Pesquisar-Lancamentos-Por-Periodo.md)
+[Home](../../../../README.md) :: [Módulo Financeiro](../../Modulo-Financeiro.md) :: [FU-Consulta Lançamentos](../FU-Consulta-Lancamentos.md) :: [WS-Pesquisar Lancamentos por Período](WS-Pesquisar-Lancamentos-Por-Periodo.md)
 
 
 # WebService: Pesquisar Lancamentos por Período
