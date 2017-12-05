@@ -35,9 +35,6 @@ import javax.ws.rs.core.Response;
 public class LancamentoResource {
 
     @Inject
-    private LancamentoDAO lancamentoDAO;
-
-    @Inject
     private LancamentoBean lancamentoBean;
 
     @Path("{id}")
@@ -46,12 +43,12 @@ public class LancamentoResource {
     public Response buscaLancamento(@PathParam("id") Integer id) {
         return Response.ok(lancamentoBean.buscar(id)).build();
     }
-    
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getHtml() {
 
-        List<Lancamento> lista = lancamentoDAO.buscar();
+        List<Lancamento> lista = lancamentoBean.buscar();
 
         String html = "<html lang=\"en\"><body><h2>";
         html += "TOTAL: " + lista.size() + "</h2></br></br><h4>";
@@ -69,55 +66,64 @@ public class LancamentoResource {
     }
 
     /**
-     * EX: curl -v -H "Content-Type: application/json" -d "{id: 1,descricaoLancamento: "Supermercado",data: "2017-11-28",valor: 20,tipoLancamento: "ALIMENTACAO"}" http://localhost:8080/lancamento
-     * @param conteudo
-     * @return 
+     * EX: 
+     * 
+     * curl -v -H "Content-Type: application/json" -H "Accept:
+     * application/json" -d '{"id": 1,"descricaoLancamento": "Barzinho","data":
+     * "2017-11-28","valor": 68.85,"tipoLancamento": "OUTROS"}'
+     * http://localhost:8080/lancamento
+     *
+     * @param lancamento
+     * @return
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response lancamentoMensal(String conteudo) {
-        Lancamento lancamento = (Lancamento) new Gson().fromJson(conteudo, Lancamento.class);
-        lancamentoDAO.lancamentoMensal(lancamento);
-
-        URI uri = URI.create("lancamento/" + lancamento.getId());
-        return Response.created(uri).build();
+    public Response lancamentoMensal(Lancamento lancamento) {
+        try {
+            lancamentoBean.salvar(lancamento);
+            URI uri = URI.create("lancamento/" + lancamento.getId());
+            return Response.created(uri).build();
+        } catch (Exception ex) {
+            Logger.getLogger(LancamentoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(ex.getMessage()).build();
+        }
     }
 
     @Path("periodo/{dia}/{mes}/{ano}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pesquisarLancamentoPorPeriodo(@PathParam("dia") Integer dia,@PathParam("mes") Integer mes, @PathParam("ano") Integer ano) {
+    public Response pesquisarLancamentoPorPeriodo(@PathParam("dia") Integer dia, @PathParam("mes") Integer mes, @PathParam("ano") Integer ano) {
 
         try {
-            return Response.ok(lancamentoBean.buscarLancamentoPorPeriodo(dia,mes,ano)).build();
+            return Response.ok(lancamentoBean.buscarLancamentoPorPeriodo(dia, mes, ano)).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.EXPECTATION_FAILED).build();
         }
     }
 
-    @Path("descricao/{nome}")
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public Response pesquisarLancamentoPorNome(@PathParam("nome") String descricaoLancamento) {
+//    @Path("descricao/{nome}")
+//    @GET
+//    @Produces(MediaType.APPLICATION_XML)
+//    public Response pesquisarLancamentoPorNome(@PathParam("nome") String descricaoLancamento) {
+//
+//        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorNome(descricaoLancamento);
+//        XStream xStream = new XStream();
+//        xStream.alias("Lancamento", Lancamento.class);
+//
+//        return Response.ok(xStream.toXML(listaLancamento)).build();
+//    }
 
-        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorNome(descricaoLancamento);
-        XStream xStream = new XStream();
-        xStream.alias("Lancamento", Lancamento.class);
-
-        return Response.ok(xStream.toXML(listaLancamento)).build();
-    }
-
-    @Path("tipo/{tipo}")
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public Response pesquisarLancamentoPorTipo(@PathParam("tipo") String tipo) {
-
-        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorTipo(tipo);
-        XStream xStream = new XStream();
-        xStream.alias("Lancamento", Lancamento.class);
-
-        return Response.ok(xStream.toXML(listaLancamento)).build();
-    }
+//    @Path("tipo/{tipo}")
+//    @GET
+//    @Produces(MediaType.APPLICATION_XML)
+//    public Response pesquisarLancamentoPorTipo(@PathParam("tipo") String tipo) {
+//
+//        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorTipo(tipo);
+//        XStream xStream = new XStream();
+//        xStream.alias("Lancamento", Lancamento.class);
+//
+//        return Response.ok(xStream.toXML(listaLancamento)).build();
+//    }
 
     @PUT
     @Path("/alterar")

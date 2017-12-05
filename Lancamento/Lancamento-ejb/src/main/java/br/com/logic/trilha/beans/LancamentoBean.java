@@ -23,8 +23,30 @@ public class LancamentoBean {
     @Inject
     LancamentoDAO lancamentoDAO;
     
-    public void salvar(Lancamento lancamento) {
-        lancamento.setId(1);
+    public void salvar(Lancamento lancamento) throws Exception {
+        //<editor-fold defaultstate="collapsed" desc="Validar dados">
+        if (lancamento == null){
+            throw new Exception("Lancamento inválido.");
+        }
+        // TODO: verificar formato da data
+        if (lancamento.getData() == null || lancamento.getData().toString().isEmpty() ){
+            throw new Exception("Data de Lancamento inválida.");
+        }
+        
+        if (lancamento.getDescricaoLancamento() == null || lancamento.getDescricaoLancamento().isEmpty() ){
+            throw new Exception("Descrição do Lancamento inválido.");
+        }
+        
+        if (lancamento.getValor() == null || lancamento.getValor() < 0 ){
+            throw new Exception("Valor de Lancamento inválido.");
+        }
+        //</editor-fold>
+        
+        lancamentoDAO.lancamentoMensal(lancamento);
+    }
+    
+    public List<Lancamento> buscar() {
+        return lancamentoDAO.buscar();
     }
     
     public Lancamento buscar(Integer id) {
@@ -33,7 +55,7 @@ public class LancamentoBean {
     
     public List<Lancamento> buscarLancamentoPorPeriodo(Integer dia, Integer mes, Integer ano) throws Exception {
 
-        //<editor-fold defaultstate="collapsed" desc="Validar os dados">
+        //<editor-fold defaultstate="collapsed" desc="Validar data">
         Date data = Data.converterIntegerToDate(dia, mes, ano);
         //</editor-fold>
 

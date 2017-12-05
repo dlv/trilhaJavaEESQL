@@ -7,12 +7,17 @@ package br.com.logic.trilha.models;
 
 import com.thoughtworks.xstream.XStream;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
  *
  * @author douglas
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Lancamento {
 
     private Integer id;

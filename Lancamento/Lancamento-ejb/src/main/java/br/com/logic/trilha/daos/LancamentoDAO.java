@@ -139,7 +139,7 @@ public class LancamentoDAO extends Conexao {
         }
     }
     
-    public List<Lancamento> pesquisarPorPeriodo(Date data) {
+    public List<Lancamento> pesquisarPorPeriodo(Date data) throws Exception {
         List<Lancamento> listaLancamento = new ArrayList<>();
 
         try {
@@ -164,9 +164,9 @@ public class LancamentoDAO extends Conexao {
             }
             
             return listaLancamento;
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
-            return null;
+            throw new Exception("Falha ao consultar por Data");
         } finally {
             close(con, stmt, pstmt, rs);
         }
