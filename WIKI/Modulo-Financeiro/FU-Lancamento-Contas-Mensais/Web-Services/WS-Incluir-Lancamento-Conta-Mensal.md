@@ -4,52 +4,33 @@
 
 ## WebService: Incluir Lançamento Conta Mensal
 
-### Descrição
+### Objetivo
 
 Inclusão de lançamentos de conta mensal
 
-## Header
+## Parâmetros de Entrada
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos do header, sua obrigatoriedade e valores válidos
+| # | Escopo | Atributo | Tipo | Obrig. | Descrição |
+|:-:|:------:|:---------|:----:|:------:|:----------|
+| 1 | Body| Lancamento.descricaoLancamento | json | S | Campo com a descrição do Lancamento | 
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+## Retornos
 
-## Atributos do Serviço
+### Retornos de Sucesso
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos da chamada ao WS, sua obrigatoriedade e valores válidos
+| # | Atributo                          | Tipo | Descrição                         |
+|:-:| --------------------------------- | :---------: | ------------------------------------ |
+| 1 | Nome do Atributo (case sensitive) | Texto, Inteiro, Numérico(12,2)        | Descrição do campo e valores válidos |
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+### Retornos de Erro
 
-## Demais Validações
+| # | Status Http                         | Código | Validação                         | Mensagem |
+|:-:| --------------------------------- | :---------: | ------------------------------------|----|
+| 1 | Nome do Atributo (case sensitive) | Texto, Inteiro, Numérico(12,2)        | Descrição do campo e valores válidos | |
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui alguma regra de validação mais especifica (que não seja apenas validação de obrigatoridade de campos)
+## Nível de Acesso
 
-## XML Request
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de request padrão
-
-~~~xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-   </soapenv:Body>
-</soapenv:Envelope>
-~~~
-
-## Response
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de response padrão
-
-~~~xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-   </soap:Body>
-</soap:Envelope>
-~~~
+Utiliza política de segurança padrão do produto.
 
 _[Sobre o Portal de Documentação](../../../About/About.md)_
 

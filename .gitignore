@@ -20,3 +20,4 @@ Lancamento/Lancamento-web/target/test-classes/
 *.zip
 *.tar.gz
 *.rar
+/Lancamento/Lancamento-test/target/

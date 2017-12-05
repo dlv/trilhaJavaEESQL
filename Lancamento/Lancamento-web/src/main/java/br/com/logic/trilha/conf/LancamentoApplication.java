@@ -15,7 +15,7 @@ import javax.ws.rs.core.Application;
  *
  * @author douglas
  */
-@ApplicationPath("/")
+@ApplicationPath("ws")
 public class LancamentoApplication extends Application {
 
     @Override

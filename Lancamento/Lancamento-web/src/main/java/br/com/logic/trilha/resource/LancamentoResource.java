@@ -6,11 +6,8 @@
 package br.com.logic.trilha.resource;
 
 import br.com.logic.trilha.beans.LancamentoBean;
-import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
 import br.com.logic.trilha.util.Data;
-import com.google.gson.Gson;
-import com.thoughtworks.xstream.XStream;
 import java.net.URI;
 import java.util.List;
 import java.util.logging.Level;
