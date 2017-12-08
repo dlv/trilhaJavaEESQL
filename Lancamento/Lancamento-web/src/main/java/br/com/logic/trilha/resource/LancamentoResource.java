@@ -65,20 +65,18 @@ public class LancamentoResource {
     /**
      * EX: 
      * 
-     * curl -v -H "Content-Type: application/json" -H "Accept:
-     * application/json" -d '{"id": 1,"descricaoLancamento": "Barzinho","data":
-     * "2017-11-28","valor": 68.85,"tipoLancamento": "OUTROS"}'
-     * http://localhost:8080/lancamento
+     * curl -v -H "Content-Type: application/json" -H "Accept: application/json" -d '{"descricaoLancamento": "Barzinho","data": "2017-11-28","valor": 68.85,"tipoLancamento": "OUTROS"}' http://localhost:8080/api/lancamento
      *
      * @param lancamento
      * @return
      */
+    @Path("incluir")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response lancamentoMensal(Lancamento lancamento) {
         try {
             lancamentoBean.salvar(lancamento);
-            URI uri = URI.create("lancamento/" + lancamento.getId());
+            URI uri = URI.create("/" + lancamento.getId());
             return Response.created(uri).build();
         } catch (Exception ex) {
             Logger.getLogger(LancamentoResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -123,9 +121,15 @@ public class LancamentoResource {
 //    }
 
     @PUT
-    @Path("/alterar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response alterarLancamento(@FormParam("idLancamento") Integer idLancamento) {
-        return Response.ok().entity("Lançamento " + idLancamento + " alterado com sucesso").build();
+    @Path("alterar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response alterarLancamento(String conteudo) {
+        
+        try {
+            lancamentoBean.alterar(conteudo);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity(ex.getMessage()).build();
+        }
     }
 }

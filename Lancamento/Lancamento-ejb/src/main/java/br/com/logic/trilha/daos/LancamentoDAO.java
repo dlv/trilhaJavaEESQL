@@ -7,7 +7,6 @@ package br.com.logic.trilha.daos;
 
 import br.com.logic.trilha.models.Lancamento;
 import br.com.logic.trilha.models.TipoLancamentoENUM;
-import br.com.logic.trilha.util.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

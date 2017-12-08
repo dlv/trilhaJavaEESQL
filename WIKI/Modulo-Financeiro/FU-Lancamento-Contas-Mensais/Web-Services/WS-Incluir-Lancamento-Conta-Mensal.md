@@ -10,29 +10,29 @@ Inclusão de lançamentos de conta mensal
 
 ## Parâmetros de Entrada
 
-| # | Escopo | Atributo | Tipo | Obrig. | Descrição |
-|:-:|:------:|:---------|:----:|:------:|:----------|
-| 1 | Body| Lancamento.descricaoLancamento | String | S | Campo com a descrição do Lancamento |
-| 2 | | Lancamento.data | Date | S | Campo com a data ocorrida do Lancamento. Formato ano-mes-dia |
-| 3 | | Lancamento.valor | Double | S | Campo com o valor do Lancamento |
-| 4 | | Lancamento.tipoLancamento | String | S | Campo com o tipo de Lancamento |
+|   #   | Escopo | Atributo                       |  Tipo  | Obrig. | Descrição                                                    |
+|:-----:|:------:|--------------------------------|:------:|:------:|:-------------------------------------------------------------|
+|   1   |  Body  | Lancamento.descricaoLancamento | String |    S   | Campo com a descrição do Lancamento                          |
+|   2   |        | Lancamento.data                |  Date  |    S   | Campo com a data ocorrida do Lancamento. Formato ano-mes-dia |
+|   3   |        | Lancamento.valor               | Double |    S   | Campo com o valor do Lancamento                              |
+|   4   |        | Lancamento.tipoLancamento      | String |    S   | Campo com o tipo de Lancamento                               |
 
 ## Retornos
 
 ### Retornos de Sucesso
 
-| # | Atributo                          | Tipo | Descrição                         |
-|:-:| --------------------------------- | :---------: | ------------------------------------ |
-| 1 | Body | String        | Descrição da URI gerada do novo lançamento incluido |
+|   #   | Atributo |  Tipo  | Descrição                                           |
+|:-----:|:--------:|:------:|-----------------------------------------------------|
+|   1   |   Body   | String | Descrição da URI gerada do novo lançamento incluido |
 
 ### Retornos de Erro
 
-| # | Status Http                         | Código | Validação                         | Mensagem |
-|:-:| --------------------------------- | :---------: | ------------------------------------|----|
-| 1 | 406 | -        | Objeto é nulo | Lancamento inválido. |
-| 2 | 406 | -        | Data nula ou vazia | Data de Lancamento inválida. |
-| 3 | 406 | -        | Descrição nula ou vazia | Descrição do Lancamento inválido. |
-| 4 | 406 | -        | Valor nulo ou menor que zero(0) | Valor de Lancamento inválido. |
+|   #   | Status Http | Código | Validação                       | Mensagem                          |
+|:-----:|:-----------:|:------:|:--------------------------------|:----------------------------------|
+|   1   |     406     |    -   | Objeto é nulo                   | Lancamento inválido.              |
+|   2   |     406     |    -   | Data nula ou vazia              | Data de Lancamento inválida.      |
+|   3   |     406     |    -   | Descrição nula ou vazia         | Descrição do Lancamento inválido. |
+|   4   |     406     |    -   | Valor nulo ou menor que zero(0) | Valor de Lancamento inválido.     |
 
 ## Nível de Acesso
 

@@ -61,4 +61,8 @@ public class LancamentoBean {
 
         return lancamentoDAO.pesquisarPorPeriodo(data);
     }
+
+    public void alterar(String json) {
+        // TODO: fazer o cast da String para objeto Lancamento
+    }
 }
