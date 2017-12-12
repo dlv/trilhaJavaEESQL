@@ -62,7 +62,24 @@ public class LancamentoBean {
         return lancamentoDAO.pesquisarPorPeriodo(data);
     }
 
-    public void alterar(String json) {
+    /**
+     * EX : curl -v -X PUT -H "Content-Type: application/json" -d '{"id":20,"descricaoLancamento":"Barzinho","data":"2017-12-12","valor":68.85,"tipoLancamento":"OUTROS"}' http://localhost:8080/lancamento/api/alterar
+     * @param lancamento
+     * @throws Exception 
+     */
+    public void alterar(Lancamento lancamento) throws Exception {
         // TODO: fazer o cast da String para objeto Lancamento
+        
+        //<editor-fold defaultstate="collapsed" desc="Validar Dados">
+        if (lancamento == null){
+            throw new Exception("Parametro Inválido");
+        }
+        
+        if (lancamento.getId() <= 0) {
+            throw new Exception("Parametro Id Inválido");
+        }
+        //</editor-fold>
+        
+        lancamentoDAO.alterarLancamento(lancamento);
     }
 }

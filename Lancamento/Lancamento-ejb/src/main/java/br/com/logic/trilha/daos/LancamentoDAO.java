@@ -27,59 +27,59 @@ import javax.enterprise.context.Dependent;
 @Stateless
 @Dependent
 public class LancamentoDAO extends Conexao {
-    
+
     private Connection con;
     private ResultSet rs;
     private Statement stmt;
     private PreparedStatement pstmt;
-    
+
     StringBuilder sql = new StringBuilder();
-    
+
     public List<Lancamento> buscar() {
         List<Lancamento> lista = new ArrayList<>();
-        
+
         sql = new StringBuilder();
         try {
             con = conecta();
-            
+
             if (con == null) {
                 return lista;
             }
-            
+
             stmt = con.createStatement();
-            
+
             sql.append("\n select lm.id, lm.descricaolancamento, lm.datalancamento, lm.valorlancamento, lm.idtipolancamento");
             sql.append("\n from lancamentomensal lm");
             sql.append("\n join tipolancamento tl on lm.idtipolancamento = tl.id");
             sql.append("\n order by lm.id desc limit 10");
-            
+
             rs = stmt.executeQuery(sql.toString());
-            
+
             while (rs.next()) {
                 Lancamento lancamento = new Lancamento();
-                
+
                 lancamento.setId(rs.getInt("id"));
                 lancamento.setDescricaoLancamento(rs.getString("descricaolancamento"));
                 lancamento.setData(rs.getDate("datalancamento"));
                 lancamento.setValor(rs.getDouble("valorlancamento"));
                 lancamento.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
-                
+
                 lista.add(lancamento);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(LancamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(con, stmt, rs);
         }
-        
+
         return lista;
     }
-    
+
     public void lancamentoMensal(Lancamento lancamento) {
         sql = new StringBuilder();
         sql.append("insert into lancamentomensal(descricaolancamento, datalancamento, valorlancamento, idtipolancamento) values (?,?,?,?)");
-        lancamento.setId(0);
+
         try {
             //<editor-fold defaultstate="collapsed" desc="Conexão">
             con = conecta();
@@ -90,10 +90,10 @@ public class LancamentoDAO extends Conexao {
             pstmt.setDate(2, new java.sql.Date(lancamento.getData().getTime()));
             pstmt.setDouble(3, lancamento.getValor());
             pstmt.setInt(4, lancamento.getTipoLancamento().getId());
-            
+
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
-            
+
             while (rs.next()) {
                 lancamento.setId(rs.getInt(1));
             }
@@ -107,7 +107,31 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, pstmt, rs);
         }
     }
-    
+
+    public void alterarLancamento(Lancamento lancamento) throws SQLException {
+        sql = new StringBuilder();
+        sql.append("update lancamentomensal");
+        sql.append("\n set descricaolancamento = ?");
+        sql.append("\n, datalancamento = ?");
+        sql.append("\n, valorlancamento = ?");
+        sql.append("\n, idtipolancamento = ?");
+        sql.append("\n where id = ?");
+
+        //<editor-fold defaultstate="collapsed" desc="Conexão">
+        con = conecta();
+        pstmt = con.prepareStatement(sql.toString());
+        //</editor-fold>
+
+        pstmt.setString(1, lancamento.getDescricaoLancamento());
+        pstmt.setDate(2, new java.sql.Date(lancamento.getData().getTime()));
+        pstmt.setDouble(3, lancamento.getValor());
+        pstmt.setInt(4, lancamento.getTipoLancamento().getId());
+        pstmt.setInt(5, lancamento.getId());
+
+        pstmt.executeUpdate();
+
+    }
+
     public Lancamento buscar(Integer id) {
         Lancamento lancamento = new Lancamento();
 
@@ -118,9 +142,9 @@ public class LancamentoDAO extends Conexao {
             //</editor-fold>
 
             pstmt.setInt(1, id);
-            
+
             rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 lancamento.setId(rs.getInt("id"));
                 lancamento.setDescricaoLancamento(rs.getString("descricaolancamento"));
@@ -128,7 +152,7 @@ public class LancamentoDAO extends Conexao {
                 lancamento.setValor(rs.getDouble("valorlancamento"));
                 lancamento.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
             }
-            
+
             return lancamento;
         } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.buscar: " + ex.getMessage());
@@ -137,7 +161,7 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, pstmt, rs);
         }
     }
-    
+
     public List<Lancamento> pesquisarPorPeriodo(Date data) throws Exception {
         List<Lancamento> listaLancamento = new ArrayList<>();
 
@@ -146,11 +170,11 @@ public class LancamentoDAO extends Conexao {
             con = conecta();
             pstmt = con.prepareStatement(montarConsulta("periodolancamento"));
             //</editor-fold>
-            
+
             pstmt.setDate(1, new java.sql.Date(data.getTime()));
 
             rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 Lancamento l = new Lancamento();
                 l.setId(rs.getInt("id"));
@@ -158,10 +182,10 @@ public class LancamentoDAO extends Conexao {
                 l.setData(rs.getDate("datalancamento"));
                 l.setValor(rs.getDouble("valorlancamento"));
                 l.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
-                
+
                 listaLancamento.add(l);
             }
-            
+
             return listaLancamento;
         } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
@@ -170,7 +194,7 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, pstmt, rs);
         }
     }
-    
+
     public List<Lancamento> pesquisarPorNome(String descricaoLancamento) {
         List<Lancamento> listaLancamento = new ArrayList<>();
 
@@ -179,11 +203,11 @@ public class LancamentoDAO extends Conexao {
             con = conecta();
             pstmt = con.prepareStatement(montarConsulta("descricaolancamento"));
             //</editor-fold>
-            
-            pstmt.setString(1, "%"+descricaoLancamento.toUpperCase()+"%");
+
+            pstmt.setString(1, "%" + descricaoLancamento.toUpperCase() + "%");
 
             rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 Lancamento l = new Lancamento();
                 l.setId(rs.getInt("id"));
@@ -191,10 +215,10 @@ public class LancamentoDAO extends Conexao {
                 l.setData(rs.getDate("datalancamento"));
                 l.setValor(rs.getDouble("valorlancamento"));
                 l.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
-                
+
                 listaLancamento.add(l);
             }
-            
+
             return listaLancamento;
         } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
@@ -203,7 +227,7 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, pstmt, rs);
         }
     }
-    
+
     public List<Lancamento> pesquisarPorTipo(String tipo) {
         List<Lancamento> listaLancamento = new ArrayList<>();
 
@@ -212,11 +236,11 @@ public class LancamentoDAO extends Conexao {
             con = conecta();
             pstmt = con.prepareStatement(montarConsulta("tipolancamento"));
             //</editor-fold>
-            
+
             pstmt.setInt(1, TipoLancamentoENUM.valueOf(tipo.toUpperCase()).getId());
 
             rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 Lancamento l = new Lancamento();
                 l.setId(rs.getInt("id"));
@@ -224,10 +248,10 @@ public class LancamentoDAO extends Conexao {
                 l.setData(rs.getDate("datalancamento"));
                 l.setValor(rs.getDouble("valorlancamento"));
                 l.setTipoLancamento(TipoLancamentoENUM.getTipoLancamentoENUM(rs.getInt("idtipolancamento")));
-                
+
                 listaLancamento.add(l);
             }
-            
+
             return listaLancamento;
         } catch (SQLException ex) {
             System.err.println("ERRO - LancamentoDAO.pesquisarPorPeriodo: " + ex.getMessage());
@@ -236,12 +260,12 @@ public class LancamentoDAO extends Conexao {
             close(con, stmt, pstmt, rs);
         }
     }
-    
-    private String montarConsulta(String consultar){
+
+    private String montarConsulta(String consultar) {
         sql = new StringBuilder();
         sql.append("\n select id, descricaolancamento, datalancamento, valorlancamento, idtipolancamento");
         sql.append("\n from lancamentomensal");
-        
+
         switch (consultar) {
             case "datalancamento":
                 sql.append("\n where datalancamento = ?");
@@ -260,7 +284,7 @@ public class LancamentoDAO extends Conexao {
                 break;
         }
         sql.append("\n order by id");
-        
+
         return sql.toString();
     }
 }

@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -120,10 +119,10 @@ public class LancamentoResource {
 //        return Response.ok(xStream.toXML(listaLancamento)).build();
 //    }
 
-    @PUT
     @Path("alterar")
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarLancamento(String conteudo) {
+    public Response alterarLancamento(Lancamento conteudo) {
         
         try {
             lancamentoBean.alterar(conteudo);
