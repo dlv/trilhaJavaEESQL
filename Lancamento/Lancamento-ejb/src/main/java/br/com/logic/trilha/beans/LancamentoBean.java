@@ -53,6 +53,18 @@ public class LancamentoBean {
         return lancamentoDAO.buscar(id);
     }
     
+    public void excluir(Lancamento lancamento) throws Exception{
+        if (lancamento == null){
+            throw new Exception("Parâmetro Inválido");
+        }
+        
+        if (lancamento.getId() <= 0){
+            throw new Exception("Parâmetro Id Inválido");
+        }
+        
+        lancamentoDAO.excluirLancamento(lancamento.getId());
+    }
+    
     public List<Lancamento> buscarLancamentoPorPeriodo(Integer dia, Integer mes, Integer ano) throws Exception {
 
         //<editor-fold defaultstate="collapsed" desc="Validar data">

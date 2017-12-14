@@ -1,60 +1,47 @@
-![Cabecalho](../../../ReadMe-Anexos/Cabecalho.png)
+# ![Cabecalho](../../../ReadMe-Anexos/Cabecalho.png)
 
 
 [Home](../../../ReadMe.md) :: [Módulo Financeiro](../../Modulo-Financeiro.md) :: [FU-Lançamento Contas Mensais](../FU-Lancamento-Contas-Mensais.md) :: [WS-Incluir Lancamento Conta Mensal](WS-Incluir-Lancamento-Conta-Mensal.md)
 
 
-# WebService: Alterar Lançamento Conta Mensal
+## WebService: Alterar Lançamento Conta Mensal
 
-## Descrição
+### Objetivo
 
-Alteração de lançamentos de conta mensal.
+Alteração de lançamentos cadastrados.
 
-## Header
+## Parâmetros de Entrada
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos do header, sua obrigatoriedade e valores válidos
+**Exemplo** :
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+`curl -v -X PUT -H "Content-Type: application/json" -d '{"id":20,"descricaoLancamento":"Barzinho","data":"2017-12-12","valor":68.85,tipoLancamento":"OUTROS"}' http://localhost:8080/lancamento/api/alterar`
 
+|   #   | Escopo | Atributo                       |   Tipo  | Obrig. | Descrição                                                    |
+|:-----:|:------:|--------------------------------|:-------:|:------:|--------------------------------------------------------------|
+|   1   |  Body  | Lancamento.id                  | Integer |    S   | Campo com o código de identificação do lançamento            |
+|   2   |        | Lancamento.descricaoLancamento |  String |    S   | Campo com a descrição do Lancamento                          |
+|   3   |        | Lancamento.data                |   Date  |    S   | Campo com a data ocorrida do Lancamento. Formato ano-mes-dia |
+|   4   |        | Lancamento.valor               |  Double |    S   | Campo com o valor do Lancamento                              |
+|   5   |        | Lancamento.tipoLancamento      |  String |    S   | Campo com o tipo de Lancamento                               |
 
-## Atributos do Serviço
+## Retornos
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos da chamada ao WS, sua obrigatoriedade e valores válidos
+### Retornos de Sucesso
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+|   #   | Atributo |  Tipo  | Descrição                                       |
+|:-----:|:--------:|:------:|-------------------------------------------------|
+|   1   |   Body   | String | Retona Status Code 200 do protocolo Status Http |
 
+### Retornos de Erro
 
-## Demais Validações
+|   #   | Status Http | Código | Validação                                     | Mensagem              |
+|:-----:|:-----------:|:------:|-----------------------------------------------|-----------------------|
+|   1   |     406     |    -   | Objeto é nulo                                 | Parametro Inválido.   |
+|   2   |     406     |    -   | Código do Lançamento menor ou igual a zero(0) | Parametro Id Inválido |
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui alguma regra de validação mais especifica (que não seja apenas validação de obrigatoridade de campos)
+## Nível de Acesso
 
-
-## XML Request
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de request padrão
-
-~~~xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-   </soapenv:Body>
-</soapenv:Envelope>
-~~~
-
-## Response
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de response padrão
-
-~~~xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-   </soap:Body>
-</soap:Envelope>
-~~~
+Utiliza política de segurança padrão do produto.
 
 _[Sobre o Portal de Documentação](../../../About/About.md)_
 

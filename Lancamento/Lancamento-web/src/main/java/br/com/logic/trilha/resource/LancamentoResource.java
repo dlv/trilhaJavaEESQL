@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -126,6 +127,18 @@ public class LancamentoResource {
         
         try {
             lancamentoBean.alterar(conteudo);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("excluir")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response excluirLancamento(Lancamento lancamento) {
+        try {
+            lancamentoBean.excluir(lancamento);
             return Response.ok().build();
         } catch (Exception ex) {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity(ex.getMessage()).build();

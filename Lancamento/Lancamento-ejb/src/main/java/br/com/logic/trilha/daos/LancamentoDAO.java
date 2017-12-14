@@ -287,4 +287,22 @@ public class LancamentoDAO extends Conexao {
 
         return sql.toString();
     }
+
+    public void excluirLancamento(Integer id) throws SQLException {
+        sql = new StringBuilder();
+        sql.append("delete from lancamentomensal");
+        sql.append("\n where id = ?");
+
+        try {
+            //<editor-fold defaultstate="collapsed" desc="Conexão">
+            con = conecta();
+            pstmt = con.prepareStatement(sql.toString());
+            //</editor-fold>
+
+            pstmt.setInt(1, id.intValue());
+            pstmt.executeUpdate();
+        } finally {
+            close(con, stmt, pstmt, rs);
+        }
+    }
 }

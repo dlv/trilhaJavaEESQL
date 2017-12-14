@@ -6,54 +6,38 @@
 
 # WebService: Excluir Lançamento Conta Mensal
 
-## Descrição
+### Objetivo
 
 Remoção de Lançamento Conta Mensal existente.
 
-## Header
+## Parâmetros de Entrada
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos do header, sua obrigatoriedade e valores válidos
+**Exemplo** :
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+`curl -v -X DELETE -H "Content-Type: application/json" -d '{"id":1}' http://localhost:8080/lancamento/api/excluir`
 
+|   #   | Escopo | Atributo                       |   Tipo  | Obrig. | Descrição                                                    |
+|:-----:|:------:|--------------------------------|:-------:|:------:|--------------------------------------------------------------|
+|   1   |  Body  | Lancamento.id                  | Integer |    S   | Campo com o código de identificação do lançamento            |
 
-## Atributos do Serviço
+## Retornos
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos da chamada ao WS, sua obrigatoriedade e valores válidos
+### Retornos de Sucesso
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+|   #   | Atributo |  Tipo  | Descrição                                       |
+|:-----:|:--------:|:------:|-------------------------------------------------|
+|   1   |   Body   | String | Retona Status Code 200 do protocolo Status Http |
 
-## Demais Validações
+### Retornos de Erro
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui alguma regra de validação mais especifica (que não seja apenas validação de obrigatoridade de campos)
+|   #   | Status Http | Código | Validação                                     | Mensagem              |
+|:-----:|:-----------:|:------:|-----------------------------------------------|-----------------------|
+|   1   |     406     |    -   | Objeto é nulo                                 | Parametro Inválido.   |
+|   2   |     406     |    -   | Código do Lançamento menor ou igual a zero(0) | Parametro Id Inválido |
 
+## Nível de Acesso
 
-## XML Request
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de request padrão
-
-~~~xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-   </soapenv:Body>
-</soapenv:Envelope>
-~~~
-
-## Response
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de response padrão
-
-~~~xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-   </soap:Body>
-</soap:Envelope>
-~~~
+Utiliza política de segurança padrão do produto.
 
 _[Sobre o Portal de Documentação](../../../About/About.md)_
 
