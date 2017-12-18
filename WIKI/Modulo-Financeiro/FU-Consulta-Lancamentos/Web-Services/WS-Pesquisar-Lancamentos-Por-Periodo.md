@@ -6,55 +6,39 @@
 
 # WebService: Pesquisar Lancamentos por Período
 
-## Descrição
+## Objetivo
 
 Pesquisa de lançamentos por período de tempo (dia/mês/ano)
 
-## Header
+**Exemplo:**
+`http://localhost:8080/lancamento/api/periodo/13/12/2017`
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos do header, sua obrigatoriedade e valores válidos
+## Parâmetros de Entrada
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+|   #   | Escopo | Atributo | Tipo    | Obrig. | Descrição                                  |
+|:-----:|:------:|----------|---------|:------:|--------------------------------------------|
+|   1   |  Body  | dia      | Integer |    S   | Campo que descrever o dia a ser pesquisado |
+|   2   |  Body  | mes      | Integer |    S   | Campo que descrever o mês a ser pesquisado |
+|   3   |  Body  | ano      | Integer |    S   | Campo que descrever o ano a ser pesquisado |
 
+## Retornos
 
-## Atributos do Serviço
+### Retornos de Sucesso
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui a lista de atributos da chamada ao WS, sua obrigatoriedade e valores válidos
+|   #   | Atributo |  Tipo | Descrição                                                                                                                                              |
+|:-----:|:--------:|:-----:|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   1   |   Body   |  JSON | Retona Status Code 200 do protocolo Status Http e no corpo do documento HTML, retorna o json com lista de lançamentos encontrados pelo data informada. |
 
-| Atributo                          | Obrigatório | Observações                          |
-|-----------------------------------|:-----------:|--------------------------------------|
-| Nome do Atributo (case sensitive) |     S/N     | Descrição do campo e valores válidos |
+### Retornos de Erro
 
-## Demais Validações
+|   #   | Status Http | Código | Validação      | Mensagem        |
+|:-----:|:-----------:|:------:|----------------|-----------------|
+|   1   |     404     |    -   | Data Incorreta | Not Found       |
+|   1   |     200     |    -   | Data Incorreta | JSON vazio `[]` |
 
-**NOTA AO DESENVOLVEDOR:** Coloque aqui alguma regra de validação mais especifica (que não seja apenas validação de obrigatoridade de campos)
+## Nível de Acesso
 
-
-
-## XML Request
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de request padrão
-
-~~~xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-   <soapenv:Header/>
-   <soapenv:Body>
-   </soapenv:Body>
-</soapenv:Envelope>
-~~~
-
-## Response
-
-**NOTA AO DESENVOLVEDOR:** Coloque aqui o XML de response padrão
-
-~~~xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-   </soap:Body>
-</soap:Envelope>
-~~~
+Utiliza política de segurança padrão do produto.
 
 _[Sobre o Portal de Documentação](../../../About/About.md)_
 
