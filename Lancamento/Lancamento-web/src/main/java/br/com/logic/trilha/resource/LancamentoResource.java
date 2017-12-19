@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.jws.WebParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +27,8 @@ import javax.ws.rs.core.Response;
 
 /**
  *
+ * https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/developing_web_services_applications/
+ * 
  * @author douglas
  */
 @Path("/")
@@ -63,9 +66,11 @@ public class LancamentoResource {
     }
 
     /**
-     * EX: 
-     * 
-     * curl -v -H "Content-Type: application/json" -H "Accept: application/json" -d '{"descricaoLancamento": "Barzinho","data": "2017-11-28","valor": 68.85,"tipoLancamento": "OUTROS"}' http://localhost:8080/api/lancamento
+     * EX:
+     *
+     * curl -v -H "Content-Type: application/json" -H "Accept: application/json"
+     * -d '{"descricaoLancamento": "Barzinho","data": "2017-11-28","valor":
+     * 68.85,"tipoLancamento": "OUTROS"}' http://localhost:8080/api/lancamento
      *
      * @param lancamento
      * @return
@@ -96,17 +101,16 @@ public class LancamentoResource {
         }
     }
 
-//    @Path("descricao/{nome}")
-//    @GET
-//    @Produces(MediaType.APPLICATION_XML)
-//    public Response pesquisarLancamentoPorNome(@PathParam("nome") String descricaoLancamento) {
-//
-//        List<Lancamento> listaLancamento = lancamentoDAO.pesquisarPorNome(descricaoLancamento);
-//        XStream xStream = new XStream();
-//        xStream.alias("Lancamento", Lancamento.class);
-//
-//        return Response.ok(xStream.toXML(listaLancamento)).build();
-//    }
+    @Path("buscar")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pesquisarLancamentoPorNome(@WebParam(name = "nome") String nome) {
+        try {
+            return Response.ok(lancamentoBean.buscarPorNome(nome)).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity(ex.getMessage()).build();
+        }
+    }
 
 //    @Path("tipo/{tipo}")
 //    @GET
@@ -119,12 +123,11 @@ public class LancamentoResource {
 //
 //        return Response.ok(xStream.toXML(listaLancamento)).build();
 //    }
-
     @Path("alterar")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response alterarLancamento(Lancamento conteudo) {
-        
+
         try {
             lancamentoBean.alterar(conteudo);
             return Response.ok().build();
@@ -132,7 +135,7 @@ public class LancamentoResource {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("excluir")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)

@@ -19,52 +19,65 @@ import javax.inject.Inject;
  */
 @Stateless
 public class LancamentoBean {
-    
+
     @Inject
     LancamentoDAO lancamentoDAO;
-    
+
     public void salvar(Lancamento lancamento) throws Exception {
         //<editor-fold defaultstate="collapsed" desc="Validar dados">
-        if (lancamento == null){
+        if (lancamento == null) {
             throw new Exception("Lancamento inválido.");
         }
         // TODO: verificar formato da data
-        if (lancamento.getData() == null || lancamento.getData().toString().isEmpty() ){
+        if (lancamento.getData() == null || lancamento.getData().toString().isEmpty()) {
             throw new Exception("Data de Lancamento inválida.");
         }
-        
-        if (lancamento.getDescricaoLancamento() == null || lancamento.getDescricaoLancamento().isEmpty() ){
+
+        if (lancamento.getDescricaoLancamento() == null || lancamento.getDescricaoLancamento().isEmpty()) {
             throw new Exception("Descrição do Lancamento inválido.");
         }
-        
-        if (lancamento.getValor() == null || lancamento.getValor() < 0 ){
+
+        if (lancamento.getValor() == null || lancamento.getValor() < 0) {
             throw new Exception("Valor de Lancamento inválido.");
         }
         //</editor-fold>
-        
+
         lancamentoDAO.lancamentoMensal(lancamento);
     }
-    
+
     public List<Lancamento> buscar() {
         return lancamentoDAO.buscar();
     }
-    
+
     public Lancamento buscar(Integer id) {
         return lancamentoDAO.buscar(id);
     }
-    
-    public void excluir(Lancamento lancamento) throws Exception{
-        if (lancamento == null){
+
+    public List<Lancamento> buscarPorNome(String nome) throws Exception {
+        //<editor-fold defaultstate="collapsed" desc="Validar entrada">
+        if (nome == null) {
             throw new Exception("Parâmetro Inválido");
         }
-        
-        if (lancamento.getId() <= 0){
+
+        if (nome.isEmpty()) {
+            throw new Exception("Parâmetro Nome Inválido");
+        }
+        //</editor-fold>
+        return lancamentoDAO.pesquisarPorNome(nome);
+    }
+
+    public void excluir(Lancamento lancamento) throws Exception {
+        if (lancamento == null) {
+            throw new Exception("Parâmetro Inválido");
+        }
+
+        if (lancamento.getId() <= 0) {
             throw new Exception("Parâmetro Id Inválido");
         }
-        
+
         lancamentoDAO.excluirLancamento(lancamento.getId());
     }
-    
+
     public List<Lancamento> buscarLancamentoPorPeriodo(Integer dia, Integer mes, Integer ano) throws Exception {
 
         //<editor-fold defaultstate="collapsed" desc="Validar data">
@@ -75,23 +88,26 @@ public class LancamentoBean {
     }
 
     /**
-     * EX : curl -v -X PUT -H "Content-Type: application/json" -d '{"id":20,"descricaoLancamento":"Barzinho","data":"2017-12-12","valor":68.85,"tipoLancamento":"OUTROS"}' http://localhost:8080/lancamento/api/alterar
+     * EX : curl -v -X PUT -H "Content-Type: application/json" -d
+     * '{"id":20,"descricaoLancamento":"Barzinho","data":"2017-12-12","valor":68.85,"tipoLancamento":"OUTROS"}'
+     * http://localhost:8080/lancamento/api/alterar
+     *
      * @param lancamento
-     * @throws Exception 
+     * @throws Exception
      */
     public void alterar(Lancamento lancamento) throws Exception {
         // TODO: fazer o cast da String para objeto Lancamento
-        
+
         //<editor-fold defaultstate="collapsed" desc="Validar Dados">
-        if (lancamento == null){
+        if (lancamento == null) {
             throw new Exception("Parametro Inválido");
         }
-        
+
         if (lancamento.getId() <= 0) {
             throw new Exception("Parametro Id Inválido");
         }
         //</editor-fold>
-        
+
         lancamentoDAO.alterarLancamento(lancamento);
     }
 }
