@@ -1,7 +1,9 @@
 package br.com.logic.trilha.lancamento.test;
 
 import br.com.logic.trilha.beans.LancamentoBean;
+import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
+import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -27,13 +29,14 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class LancamentoResourceTest {
 
-    
+    @Inject
     private LancamentoBean lancamentoBean;
     
     @Deployment
     public static JavaArchive createDeployment() {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addClass(Lancamento.class)
+                .addClass(LancamentoBean.class)
+                .addClass(LancamentoDAO.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(jar.toString(true));
         return jar;
@@ -43,6 +46,6 @@ public class LancamentoResourceTest {
     public void testBuscarLancamento() {
 //        Lancamento result = lancamentoBean.buscar(10);
 //        System.out.println(result);
-        Assert.assertTrue(true);
+        Assert.assertTrue(lancamentoBean.teste());
     }
 }

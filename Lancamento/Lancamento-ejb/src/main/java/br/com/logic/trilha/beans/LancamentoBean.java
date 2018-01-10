@@ -110,4 +110,8 @@ public class LancamentoBean {
 
         lancamentoDAO.alterarLancamento(lancamento);
     }
+    
+    public Boolean teste(){
+        return Boolean.TRUE;
+    }
 }
