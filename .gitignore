@@ -21,3 +21,5 @@ Lancamento/Lancamento-web/target/test-classes/
 *.tar.gz
 *.rar
 /Lancamento/Lancamento-test/target/
+Lancamento/Lancamento-ejb/nbproject/
+Lancamento/Lancamento-ejb/src/test/
