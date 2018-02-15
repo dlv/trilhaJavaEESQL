@@ -5,9 +5,17 @@ swarm:
         driver-class-name: org.h2.Driver
         xa-datasource-class-name: org.h2.jdbcx.JdbcDataSource
         driver-module-name: com.h2database.h2
+      hsqldb:
+        driver-class-name: org.hsqldb.jdbcDriver
+        xa-datasource-class-name: org.hsqldb.jdbc.pool.JDBCXADataSource
+        driver-module-name: org.hsqldb
     data-sources:
-      trilhads:
+      ExampleDS:
         driver-name: h2
         connection-url: jdbc:h2:mem:trilhaJee;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
         user-name: sa
         password: sa
+      trilhaDS:
+        driver-name: hsqldb
+        connection-url: jdbc:hsqldb:hsql://localhost:9001/lancamento
+        user-name: sa
