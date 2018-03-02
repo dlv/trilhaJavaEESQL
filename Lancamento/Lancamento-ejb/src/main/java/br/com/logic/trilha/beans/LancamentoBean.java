@@ -7,7 +7,6 @@ package br.com.logic.trilha.beans;
 
 import br.com.logic.trilha.daos.LancamentoDAO;
 import br.com.logic.trilha.models.Lancamento;
-import br.com.logic.trilha.remote.LancamentoRemote;
 import br.com.logic.trilha.util.Data;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +18,11 @@ import javax.inject.Inject;
  * @author douglas
  */
 @Stateless
-public class LancamentoBean implements LancamentoRemote {
+public class LancamentoBean {
 
     @Inject
     LancamentoDAO lancamentoDAO;
 
-    @Override
     public void salvar(Lancamento lancamento) throws Exception {
         //<editor-fold defaultstate="collapsed" desc="Validar dados">
         if (lancamento == null) {
