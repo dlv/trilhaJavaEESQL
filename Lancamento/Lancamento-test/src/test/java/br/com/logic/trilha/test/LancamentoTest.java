@@ -29,7 +29,7 @@ public class LancamentoTest {
         EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class, 
                 "lancamento-test" + System.currentTimeMillis() + ".ear");
 
-        ear.addAsModule(new File("../Lancamento-ejb/target/Lancamento-ejb-1.0-SNAPSHOT.jar"), 
+        ear.addAsModule(new File("/home/douglas/Documentos/projeto/trilhaJEE/trilhaJavaEESQL/Lancamento/Lancamento-ejb/target/Lancamento-ejb-1.0-SNAPSHOT.jar"), 
                 "Lancamento-ejb" + System.currentTimeMillis() + ".jar");
 
         JavaArchive jarTest = ShrinkWrap.create(JavaArchive.class, "lancamento-test.jar")

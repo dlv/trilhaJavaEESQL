@@ -23,8 +23,8 @@
         </configuration>
     </container>
 
-    <engine>
-        <property name="deploymentExportPath">target/deployments</property>
-    </engine>
+<!--    <engine>
+        <property name="deploymentExportPath">target/wildfly-8.1.0.Final/standalone/deployments</property>
+    </engine>-->
 
 </arquillian>
